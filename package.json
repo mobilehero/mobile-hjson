@@ -3,7 +3,7 @@
   "description": "Repackaged version of Hjson, the Human JSON, for mobile",
   "main": "./hjson.js",
   "author": "Christian Zangl",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "keywords": [
     "json",
     "comments",
