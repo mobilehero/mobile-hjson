@@ -1,5 +1,5 @@
 /*! @preserve
- * Hjson v1.7.3
+ * Hjson v1.7.4
  * http://hjson.org
  *
  * Copyright 2014, 2015 Christian Zangl, MIT license
@@ -350,7 +350,10 @@ var Hjson = (function () {
                 if (n !== undefined) return n;
               }
           }
-          if (isEol) return value;
+          if (isEol) {
+            // remove any whitespace at the end (ignored in quoteless strings)
+            return value.trim();
+          }
         }
         value += ch;
       }
@@ -774,8 +777,8 @@ var Hjson = (function () {
     setEndOfLine: function(eol) {
       if (eol === '\n' || eol === '\r\n') EOL = eol;
     },
-    bracesSameLine: function() { return bracesSameLine; },
-    setBracesSameLine: function(v) { bracesSameLine = v; },
+    bracesSameLine: function() { return defaultBracesSameLine; },
+    setBracesSameLine: function(v) { defaultBracesSameLine = v; },
 
     // round trip shortcut
     rt: {
