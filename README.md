@@ -1,8 +1,10 @@
 ---
 
+
 >⚡ This is a repackaging of:  [`https://github.com/laktak/hjson-js`](https://github.com/laktak/hjson-js)  
 >*This project has been modified from the original to be smaller for use with mobile frameworks*  
 >[![NPM version](https://img.shields.io/npm/v/%40mobile%2Fhjson.svg?style=flat-square)](http://www.npmjs.com/package/%40mobile%2Fhjson)
+
 
 ---
 
