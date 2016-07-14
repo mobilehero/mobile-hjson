@@ -1,0 +1,46 @@
+{
+  "name": "@mobile/hjson",
+  "description": "Repackaged version of Hjson, the Human JSON, for mobile",
+  "main": "./hjson.js",
+  "author": "Christian Zangl",
+  "version": "1.7.2",
+  "keywords": [
+    "json",
+    "comments",
+    "config",
+    "hjson",
+    "parser",
+    "serializer",
+    "human",
+    "mobile"
+  ],
+  "scripts": {
+    "download": "npm install %npm_package_source_name%@%npm_package_version%",
+    "commit": "git add -A && git commit -m \":checkered_flag: v%npm_package_version% :heavy_minus_sign: Repackaging from: %npm_package_source_url%\"",
+    "tag": "git tag v%npm_package_version%",
+    "push": "git push && git push --tags",
+    "update:version": "npm --no-git-tag-version version --",
+    "update:download": "npm run update:version --",
+    "update:copy": "cp ./node_modules/hjson/lib/hjson.js . && cp ./node_modules/hjson/history.md .",
+    "update:commit": "npm run update:version --",
+    "update:push": "npm run update:version --",
+    "update:publish": "npm run update:version --",
+    "postupdate:download": "npm run download && npm run update:copy",
+    "postupdate:commit": "npm run commit && npm run tag",
+    "postupdate:push": "npm run postupdate:download && npm run postupdate:commit && npm run push",
+    "postupdate:publish": "npm run postupdate:push && npm publish"
+  },
+  "source": {
+    "name": "hjson",
+    "url": "https://www.npmjs.com/package/hjson"
+  },
+  "homepage": "http://hjson.org",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mobilehero/mobile-hjson.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mobilehero/mobile-hjson/issues"
+  },
+  "license": "MIT"
+}
