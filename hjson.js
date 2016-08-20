@@ -1,5 +1,5 @@
 /*! @preserve
- * Hjson v1.8.4
+ * Hjson v2.0.1
  * http://hjson.org
  *
  * Copyright 2014-2016 Christian Zangl, MIT license
@@ -144,7 +144,7 @@ var Hjson = (function () {
     while (ch && ch <= ' ') next();
 
     if (stopAtNext) {
-      // end scan if we find a control character like ,}] or a comment
+      // end scan if we find a punctuator character like ,}] or a comment
       if (ch === ',' || ch === '}' || ch === ']' ||
         ch === '#' || ch === '/' && (text[at] === '/' || text[at] === '*')) ch = 0;
     }
@@ -184,6 +184,10 @@ var Hjson = (function () {
     function resetAt() {
       at = 0;
       ch = ' ';
+    }
+
+    function isPunctuatorChar(c) {
+      return c === '{' || c === '}' || c === '[' || c === ']' || c === ',' || c === ':';
     }
 
     // Call error when something is wrong.
@@ -311,7 +315,7 @@ var Hjson = (function () {
           if (!ch) error("Found EOF while looking for a key name (check your syntax)");
           else if (space < 0) space = name.length;
         }
-        else if (ch === '{' || ch === '}' || ch === '[' || ch === ']' || ch === ',') {
+        else if (isPunctuatorChar(ch)) {
           error("Found '" + ch + "' where a key name was expected (check your syntax or use quotes if the key name includes {}[],: or whitespace)");
         }
         else name += ch;
@@ -341,12 +345,15 @@ var Hjson = (function () {
       // Hjson strings can be quoteless
       // returns string, true, false, or null.
       var value = ch;
+      if (isPunctuatorChar(ch))
+        error("Found a punctuator character '" + ch + "' when excpecting a quoteless string (check your syntax)");
+
       for(;;) {
         next();
         if (value.length === 3 && value === "'''") return mlString();
         var isEol = ch === '\r' || ch === '\n' || ch === '';
-        if (isEol || ch === ',' ||
-          ch === '}' || ch === ']' ||
+        if (isEol ||
+          ch === ',' || ch === '}' || ch === ']' ||
           ch === '#' ||
           ch === '/' && (peek(0) === '/' || peek(0) === '*')
           ) {
@@ -525,6 +532,7 @@ var Hjson = (function () {
     var needsEscape = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
     // like needsEscape but without \\ and \"
     var needsQuotes = /[\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    var needsQuotes2 = /^\s|^"|^'''|^#|^\/\*|^\/\/|^\{|^\[|\s$"/g;
     // ''' || (needsQuotes but without \n and \r)
     var needsEscapeML = /'''|[\x00-\x09\x0b\x0c\x0e-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
     // starts with a keyword and optionally is followed by a comment
@@ -545,8 +553,6 @@ var Hjson = (function () {
     // options
     var eol, keepWsc, bracesSameLine, quoteAlways, emitRootBraces;
 
-    function isWhite(c) { return c <= ' '; }
-
     function quoteReplace(string) {
       return string.replace(needsEscape, function (a) {
         var c = meta[a];
@@ -559,22 +565,14 @@ var Hjson = (function () {
       if (!string) return '""';
 
       needsQuotes.lastIndex = 0;
+      needsQuotes2.lastIndex = 0;
       startsWithKeyword.lastIndex = 0;
-      var doEscape = quoteAlways || hasComment || needsQuotes.test(string);
 
       // Check if we can insert this string without quotes
       // see hjson syntax (must not parse as true, false, null or number)
 
-      var first = string[0], last = string[string.length-1];
-      if (doEscape ||
-        isWhite(first) ||
-        first === '"' ||
-        first === '\'' && string[1] === '\'' && string[2] === '\'' ||
-        first === '#' ||
-        first === '/' && (string[1] === '*' || string[1] === '/') ||
-        first === '{' ||
-        first === '[' ||
-        isWhite(last) ||
+      if (quoteAlways || hasComment ||
+        needsQuotes.test(string) || needsQuotes2.test(string) ||
         tryParseNumber(string, true) !== undefined ||
         startsWithKeyword.test(string)) {
 
