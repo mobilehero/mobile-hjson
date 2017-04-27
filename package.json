@@ -42,5 +42,13 @@
   "bugs": {
     "url": "https://github.com/mobilehero/mobile-hjson/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+	"mobile": {
+		"modules": {
+			"fallback": [ {
+				"id": "hjson",
+				"path": "./hjson"
+			} ]
+		}
+	}
 }
