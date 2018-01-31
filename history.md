@@ -1,5 +1,9 @@
 # hjson-js History
 
+- v2.3.0
+  - improved comment round trip
+- v2.2.0
+  - stringify will always emit root braces
 - v2.1.0
   - add DSF (domain specific formats), experimental
   - refactor, use browserify for output (see bundle)
