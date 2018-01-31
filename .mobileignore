@@ -3,7 +3,7 @@
 
 # But not these files...
 !package.json
-!lodash.js
+!hjson.js
 
 # ...even if they are in subdirectories
 !*/
