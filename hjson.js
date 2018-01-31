@@ -1,5 +1,5 @@
 /*! @preserve
- * Hjson v2.3.1
+ * Hjson v2.4.0
  * http://hjson.org
  *
  * Copyright 2014-2016 Christian Zangl, MIT license
@@ -45,8 +45,20 @@
                     obsolete: will always emit braces
 
         quotes      string, controls how strings are displayed.
+                    setting separator implies "strings"
                     "min"     - no quotes whenever possible (default)
-                    "always"  - always use quotes
+                    "keys"    - use quotes around keys
+                    "strings" - use quotes around string values
+                    "all"     - use quotes around keys and string values
+
+        multiline   string, controls how multiline strings are displayed.
+                    setting quotes implies "off"
+                    "std"     - strings containing \n are shown in
+                                multiline format (default)
+                    "no-tabs" - like std but disallow tabs
+                    "off"     - show in JSON format
+
+        separator   boolean, output a comma separator between elements. Default false.
 
         space       specifies the indentation of nested structures. If it is
                     a number, it will specify the number of spaces to indent
