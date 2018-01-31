@@ -1,9 +1,10 @@
 {
   "name": "@mobile/hjson",
+  "alias": "hjson",
   "description": "Repackaged version of Hjson, the Human JSON, for mobile",
   "main": "./hjson.js",
   "author": "Christian Zangl",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "keywords": [
     "json",
     "comments",
@@ -15,7 +16,7 @@
     "mobile"
   ],
   "scripts": {
-    "download": "npm install $npm_package_source_name@$npm_package_version",
+    "download": "npm install --save-dev $npm_package_source_name@$npm_package_version",
     "commit": "git add -A && git commit -m \":checkered_flag: v$npm_package_version :heavy_minus_sign: Repackaging from: $npm_package_source_url\"",
     "tag": "git tag v$npm_package_version",
     "push": "git push && git push --tags",
@@ -42,13 +43,25 @@
   "bugs": {
     "url": "https://github.com/mobilehero/mobile-hjson/issues"
   },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-plugin-jsdoc": "^3.3.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "hjson": "^2.0.5"
+  },
   "license": "MIT",
-	"mobile": {
-		"modules": {
-			"fallback": [ {
-				"id": "hjson",
-				"path": "./hjson"
-			} ]
-		}
-	}
+  "mobile": {
+    "modules": {
+      "fallback": [
+        {
+          "id": "hjson",
+          "path": "./hjson"
+        }
+      ]
+    },
+    "alias": "hjson"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
